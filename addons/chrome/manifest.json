@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "WallOfTimeLog",
+  "version": "1.0.0",
+  "description": "Retrieves time logs from the Intranet and displays it on Wall Of Time Log",
+
+  "content_scripts": [
+    {
+      "js": ["Content.js"]
+    }
+  ]
+}
