@@ -160,7 +160,7 @@ public class JamController {
     })
     public ResponseEntity<List<Integer>> getPromotions() {
         List<Promotion> promotions = promotionRepository.findAll();
-        List<Integer> promotionIds = promotions.stream().map(Promotion::getId).collect(Collectors.toList());
+        List<Integer> promotionIds = promotions.stream().map(Promotion::getYear).collect(Collectors.toList());
         return ResponseEntity.ok(promotionIds);
     }
 
