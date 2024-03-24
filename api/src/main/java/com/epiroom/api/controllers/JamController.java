@@ -40,12 +40,12 @@ public class JamController {
     @GetMapping("/week")
     @Operation(summary = "Get timelog for last week")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Day found", content = {
+            @ApiResponse(responseCode = "200", description = "Data found", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SimpleLogTime.class))
                     )
             })
     })
-    public ResponseEntity<List<SimpleLogTime>> getActivities() {
+    public ResponseEntity<List<SimpleLogTime>> getActivitiesWeek() {
         LocalDateTime start = LocalDateTime.now().minusDays(7);
         start = start.withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime end = start.withHour(23).withMinute(59).withSecond(59).withNano(0);
@@ -61,6 +61,91 @@ public class JamController {
                 simpleLogTime.addDuration(logTime.getDuration());
             }
         });
+        simpleLogTimes.sort((o1, o2) -> o2.getDuration() - o1.getDuration());
+        return ResponseEntity.ok(simpleLogTimes);
+    }
+
+    @GetMapping("/month")
+    @Operation(summary = "Get timelog for last month")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Data found", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SimpleLogTime.class))
+                    )
+            })
+    })
+    public ResponseEntity<List<SimpleLogTime>> getActivitiesMonth() {
+        LocalDateTime start = LocalDateTime.now().minusMonths(1);
+        start = start.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime end = start.withHour(23).withMinute(59).withSecond(59).withNano(0);
+        end = end.plusMonths(1);
+        List<LogTime> allLogTimes = logTimeRepository.findByDateBetween(Date.from(start.toInstant(ZoneOffset.UTC)), Date.from(end.toInstant(ZoneOffset.UTC)));
+        List<SimpleLogTime> simpleLogTimes = new ArrayList<>();
+        allLogTimes.forEach(logTime -> {
+            SimpleLogTime simpleLogTime = simpleLogTimes.stream().filter(simpleLogTime1 -> simpleLogTime1.getMail().equals(logTime.getMail())).findFirst().orElse(null);
+            if (simpleLogTime == null) {
+                simpleLogTime = new SimpleLogTime(logTime);
+                simpleLogTimes.add(simpleLogTime);
+            } else {
+                simpleLogTime.addDuration(logTime.getDuration());
+            }
+        });
+        simpleLogTimes.sort((o1, o2) -> o2.getDuration() - o1.getDuration());
+        return ResponseEntity.ok(simpleLogTimes);
+    }
+
+    @GetMapping("/sixmonth")
+    @Operation(summary = "Get timelog for last six month")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Data found", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SimpleLogTime.class))
+                    )
+            })
+    })
+    public ResponseEntity<List<SimpleLogTime>> getActivitiesSixMonth() {
+        LocalDateTime start = LocalDateTime.now().minusMonths(6);
+        start = start.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime end = start.withHour(23).withMinute(59).withSecond(59).withNano(0);
+        end = end.plusMonths(6);
+        List<LogTime> allLogTimes = logTimeRepository.findByDateBetween(Date.from(start.toInstant(ZoneOffset.UTC)), Date.from(end.toInstant(ZoneOffset.UTC)));
+        List<SimpleLogTime> simpleLogTimes = new ArrayList<>();
+        allLogTimes.forEach(logTime -> {
+            SimpleLogTime simpleLogTime = simpleLogTimes.stream().filter(simpleLogTime1 -> simpleLogTime1.getMail().equals(logTime.getMail())).findFirst().orElse(null);
+            if (simpleLogTime == null) {
+                simpleLogTime = new SimpleLogTime(logTime);
+                simpleLogTimes.add(simpleLogTime);
+            } else {
+                simpleLogTime.addDuration(logTime.getDuration());
+            }
+        });
+        simpleLogTimes.sort((o1, o2) -> o2.getDuration() - o1.getDuration());
+        return ResponseEntity.ok(simpleLogTimes);
+    }
+
+    @GetMapping("/year")
+    @Operation(summary = "Get timelog for last year")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Data found", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SimpleLogTime.class))
+                    )
+            })
+    })
+    public ResponseEntity<List<SimpleLogTime>> getActivitiesYear() {
+        LocalDateTime start = LocalDateTime.now().minusYears(1);
+        start = start.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime end = start.withHour(23).withMinute(59).withSecond(59).withNano(0);
+        end = end.plusYears(1);
+        List<LogTime> allLogTimes = logTimeRepository.findByDateBetween(Date.from(start.toInstant(ZoneOffset.UTC)), Date.from(end.toInstant(ZoneOffset.UTC)));
+        List<SimpleLogTime> simpleLogTimes = new ArrayList<>();
+        allLogTimes.forEach(logTime -> {
+            SimpleLogTime simpleLogTime = simpleLogTimes.stream().filter(simpleLogTime1 -> simpleLogTime1.getMail().equals(logTime.getMail())).findFirst().orElse(null);
+            if (simpleLogTime == null) {
+                simpleLogTime = new SimpleLogTime(logTime);
+                simpleLogTimes.add(simpleLogTime);
+            } else {
+                simpleLogTime.addDuration(logTime.getDuration());
+            }
+        });
+        simpleLogTimes.sort((o1, o2) -> o2.getDuration() - o1.getDuration());
         return ResponseEntity.ok(simpleLogTimes);
     }
 
