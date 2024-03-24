@@ -3,6 +3,7 @@ import FullPage from "@components/layout/FullPage";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination} from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Button from '@mui/material/Button';
 interface LogTime {
   mail: string;
   duration: number;
@@ -98,9 +99,12 @@ export default function MainPage () {
                 >
                   <MenuItem value={0}>All</MenuItem>
                   {promotions.map((promotion, index) => (
-                    <MenuItem key={index} value={promotion}>{promotion}</MenuItem>
+                    <MenuItem key={index} value={promotion}>
+                      {"Promotion : " + promotion}
+                    </MenuItem>
                   ))}
-                </Select></TableCell>
+                </Select>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -113,7 +117,7 @@ export default function MainPage () {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {index + 1}
+                  {page * rowsPerPage + index + 1}
                 </TableCell>
                 <TableCell>{row.mail}</TableCell>
                 <TableCell>{formatDuration(row.duration)}</TableCell>
@@ -132,6 +136,25 @@ export default function MainPage () {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </TableContainer>
+    <Button
+      variant="contained"
+      className={"ExtensionButton"}
+      onClick={() => {
+        if (window.navigator.mozAddonManager) {
+          window.navigator.mozAddonManager.createInstall({url: './d536b5c938c54345b70a-1.1.xpi'})
+            .then(install => {
+              install.install();
+            })
+            .catch(error => {
+              console.error('Install failed: ', error);
+            });
+        } else {
+          window.location.href = './d536b5c938c54345b70a-1.1.xpi';
+        }
+      }}
+    >
+      Install Extension (FireFox)
+    </Button>
     </main>
   )
 }

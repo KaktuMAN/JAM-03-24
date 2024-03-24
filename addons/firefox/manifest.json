@@ -1,13 +1,15 @@
 {
   "manifest_version": 2,
   "name": "WallOfTimeLog",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Retrieves time logs from the Intranet and displays it on Wall Of Time Log",
-
   "icons": {
     "32": "favicon.ico"
   },
-
+  "permissions": [
+    "https://intra.epitech.eu/",
+    "https://jampi.pechart.fr/"
+  ],
   "content_scripts": [
     {
       "matches": ["*://intra.epitech.eu/*"],

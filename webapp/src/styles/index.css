@@ -13,5 +13,8 @@
     border: 2px solid #e5ebe7;
     border-radius: 10px;
     background: transparent;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
+}
+.ExtensionButton {
+    margin-top: 50px;
 }
