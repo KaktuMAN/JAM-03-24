@@ -140,11 +140,15 @@ export default function MainPage () {
       variant="contained"
       className={"ExtensionButton"}
       onClick={() => {
+        // @ts-ignore
         if (window.navigator.mozAddonManager) {
+        // @ts-ignore
           window.navigator.mozAddonManager.createInstall({url: './d536b5c938c54345b70a-1.1.xpi'})
+        // @ts-ignore
             .then(install => {
               install.install();
             })
+        // @ts-ignore
             .catch(error => {
               console.error('Install failed: ', error);
             });
