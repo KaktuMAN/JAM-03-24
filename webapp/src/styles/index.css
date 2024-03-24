@@ -10,7 +10,7 @@
 
 .Tableau {
     width: 40%;
-    border: 1px solid #e5ebe7;
+    border: 2px solid #e5ebe7;
     border-radius: 10px;
     background: transparent;
     backdrop-filter: blur(20px);

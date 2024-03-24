@@ -6,6 +6,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 interface LogTime {
   mail: string;
   duration: number;
+  promotion: number;
 }
 
 const formatDuration = (duration: number): string => {
@@ -16,10 +17,20 @@ const formatDuration = (duration: number): string => {
 };
 
 export default function MainPage () {
-  const [data, setData] = React.useState<LogTime[]>([]);
+  const [logData, setData] = React.useState<LogTime[]>([]);
+  const [promotions, setPromotions] = React.useState<number[]>([]);
+  const [promotion, setPromotion] = React.useState<number>(0);
   const [since, setSince] = React.useState<number>(1);
   const [page, setPage] = React.useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
+  const getPromotions = async () => {
+    const response = await fetch("https://jampi.pechart.fr/promotions");
+    if (!response.ok) {
+      console.error("Error while fetching promotions");
+      return;
+    }
+    setPromotions(await response.json());
+  }
   const getData = async (since:number) => {
     let url = "https://jampi.pechart.fr/";
     setSince(since)
@@ -54,10 +65,11 @@ export default function MainPage () {
   };
   useEffect(() => {
     getData(1);
+    getPromotions();
   }, []);
   return (
     <main className={"main"}>
-      <h1>LeaderBoard (léo le goat)</h1>
+      <h1>LeaderBoard</h1>
       <TableContainer component={Paper} className={"Tableau"}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -77,30 +89,43 @@ export default function MainPage () {
                   <MenuItem value={4}>Last Year</MenuItem>
                 </Select>
             </TableCell>
+            <TableCell style={{width: '20%'}}>
+                <Select
+                  value={promotion}
+                  onChange={(event: SelectChangeEvent<number>) => {
+                    setPromotion(event.target.value as number);
+                  }}
+                >
+                  <MenuItem value={0}>All</MenuItem>
+                  {promotions.map((promotion, index) => (
+                    <MenuItem key={index} value={promotion}>{promotion}</MenuItem>
+                  ))}
+                </Select></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-            <TableRow
-              key={row.mail}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">
-                {index + 1}
-              </TableCell>
-                <TableCell>
-                {row.mail}
-              </TableCell>
-              <TableCell>
-                {formatDuration(row.duration)}
-              </TableCell>
-            </TableRow>
-          ))}
+          {logData
+            .filter((row) => promotion === 0 || row.promotion === promotion)
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((row, index) => (
+              <TableRow
+                key={row.mail}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {index + 1}
+                </TableCell>
+                <TableCell>{row.mail}</TableCell>
+                <TableCell>{formatDuration(row.duration)}</TableCell>
+                <TableCell>{row.promotion}</TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={data.length}
+        count={logData.filter((row) => promotion === 0 || row.promotion === promotion).length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
