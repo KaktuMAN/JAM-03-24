@@ -1,0 +1,17 @@
+.main {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-size: cover;
+    background: transparent url("../../public/1014882.jpg") no-repeat center;
+}
+
+.Tableau {
+    width: 40%;
+    border: 1px solid #e5ebe7;
+    border-radius: 10px;
+    background: transparent;
+    backdrop-filter: blur(20px);
+}

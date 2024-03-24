@@ -6,6 +6,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ReactElement, ReactNode} from "react"
 import Head from "next/head";
 import "@styles/auth.css";
+import "@styles/index.css";
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;

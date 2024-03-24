@@ -14,16 +14,17 @@ async function main() {
   });
   let options = {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
       mail: login,
       promotion: year,
       logTimes: logtimes
-    }),
-    Cookie: "",
-    referrerPolicy: 'no-referrer' // add this line
+    })
   };
-  console.log(options.body)
-  await fetch("https://localhost:8080/log", options);
+  console.log(options);
+  await fetch("https://jampi.pechart.fr/log", options);
 }
 
 main();

@@ -50,7 +50,7 @@ public class JamController {
     public ResponseEntity<List<SimpleLogTime>> getActivities(@RequestParam(name = "timestamp") long timestamp) {
         LocalDateTime start = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC);
         start = start.withHour(0).withMinute(0).withSecond(0).withNano(0);
-        LocalDateTime end = start.plusDays(1);
+        LocalDateTime end = start.withHour(23).withMinute(59).withSecond(59).withNano(0);
         List<LogTime> logTimes = logTimeRepository.findByDateBetween(Date.from(start.toInstant(ZoneOffset.UTC)), Date.from(end.toInstant(ZoneOffset.UTC)));
         return ResponseEntity.ok(logTimes.stream().map(SimpleLogTime::new).toList());
     }

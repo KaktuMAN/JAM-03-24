@@ -27,8 +27,9 @@ export default function MainPage () {
   ]
 
   return (
-    <main style={{width: "100%", display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh'}}>
-      <TableContainer component={Paper} style={{ width: '50%'}}>
+    <main className={"main"}>
+      <h1>LeaderBoard</h1>
+      <TableContainer component={Paper} className={"Tableau"}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
