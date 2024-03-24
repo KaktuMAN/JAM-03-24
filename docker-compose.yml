@@ -11,23 +11,26 @@ services:
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     env_file:
       - .env
-    restart: unless-stopped
     networks:
-      - db-api
+      - api_db
+    restart: unless-stopped
   api:
     container_name: api-wolt
     depends_on:
       - postgres
     build: ./api
     ports:
-      - "${API_PORT}:3000"
-    restart: unless-stopped
+      - "${API_PORT}:8080"
+    env_file:
+      - .env
     networks:
-      - db-api
-  application:
-    container_name: application-wolt
+      - api_db
+    restart: unless-stopped
+  wolt:
+    container_name: wolt-wolt
     depends_on:
       - postgres
+      - api
     build: ./webapp
     ports:
       - "${APP_PORT}:3000"
@@ -35,4 +38,4 @@ services:
 volumes:
   postgres_data_jam:
 networks:
-  db-api:
+  api_db:
