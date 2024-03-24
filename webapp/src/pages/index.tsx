@@ -49,6 +49,22 @@ export default function MainPage () {
   }
   return (
     <main style={{width: "100%", display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh'}}>
+      <table width={"100%"} border={1} className={"Table"}>
+        <thead>
+          <tr>
+            <th scope={"col"}>Position</th>
+            <th scope={"col"}>Login</th>
+            <th scope={"col"}>LogTime</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>caca.pipi@epitech.eu</td>
+            <td>35h</td>
+          </tr>
+        </tbody>
+      </table>
     </main>
   )
 }
