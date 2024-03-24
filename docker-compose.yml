@@ -12,6 +12,14 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+  api:
+    container_name: api-wolt
+    depends_on:
+      - postgres
+    build: ./api
+    ports:
+      - "${API_PORT}:3000"
+    restart: unless-stopped
   application:
     container_name: application-wolt
     depends_on:

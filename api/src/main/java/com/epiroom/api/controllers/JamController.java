@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @Tag(name = "JAM", description = "Jam API")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://intra.epitech.eu")
 @RestController
 public class JamController {
     private final LogTimeRepository logTimeRepository;

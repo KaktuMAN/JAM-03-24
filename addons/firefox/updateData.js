@@ -19,6 +19,7 @@ async function main() {
       promotion: year,
       logTimes: logtimes
     }),
+    Cookie: "",
     referrerPolicy: 'no-referrer' // add this line
   };
   console.log(options.body)
