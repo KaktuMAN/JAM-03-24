@@ -21,4 +21,8 @@ public class SimpleLogTime {
     public int getDuration() {
         return duration;
     }
+
+    public void addDuration(int duration) {
+        this.duration += duration;
+    }
 }

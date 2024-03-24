@@ -10,7 +10,6 @@ import com.epiroom.api.repository.LogTimeRepository;
 import com.epiroom.api.repository.PromotionRepository;
 import com.epiroom.api.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,22 +37,31 @@ public class JamController {
         this.userRepository = userRepository;
         this.promotionRepository = promotionRepository;
     }
-    @GetMapping("/day")
-    @Operation(summary = "Get timelog for a day", parameters = {
-            @Parameter(name = "timestamp", description = "Timestamp", required = true)
-    })
+    @GetMapping("/week")
+    @Operation(summary = "Get timelog for last week")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Day found", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SimpleLogTime.class))
                     )
             })
     })
-    public ResponseEntity<List<SimpleLogTime>> getActivities(@RequestParam(name = "timestamp") long timestamp) {
-        LocalDateTime start = LocalDateTime.ofEpochSecond(timestamp, 0, ZoneOffset.UTC);
+    public ResponseEntity<List<SimpleLogTime>> getActivities() {
+        LocalDateTime start = LocalDateTime.now().minusDays(7);
         start = start.withHour(0).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime end = start.withHour(23).withMinute(59).withSecond(59).withNano(0);
-        List<LogTime> logTimes = logTimeRepository.findByDateBetween(Date.from(start.toInstant(ZoneOffset.UTC)), Date.from(end.toInstant(ZoneOffset.UTC)));
-        return ResponseEntity.ok(logTimes.stream().map(SimpleLogTime::new).toList());
+        end = end.plusDays(7);
+        List<LogTime> allLogTimes = logTimeRepository.findByDateBetween(Date.from(start.toInstant(ZoneOffset.UTC)), Date.from(end.toInstant(ZoneOffset.UTC)));
+        List<SimpleLogTime> simpleLogTimes = new ArrayList<>();
+        allLogTimes.forEach(logTime -> {
+            SimpleLogTime simpleLogTime = simpleLogTimes.stream().filter(simpleLogTime1 -> simpleLogTime1.getMail().equals(logTime.getMail())).findFirst().orElse(null);
+            if (simpleLogTime == null) {
+                simpleLogTime = new SimpleLogTime(logTime);
+                simpleLogTimes.add(simpleLogTime);
+            } else {
+                simpleLogTime.addDuration(logTime.getDuration());
+            }
+        });
+        return ResponseEntity.ok(simpleLogTimes);
     }
 
     @PostMapping("/log")
