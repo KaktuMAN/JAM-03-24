@@ -23,6 +23,7 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name = "JAM", description = "Jam API")
 @CrossOrigin(origins = "*")
@@ -147,6 +148,20 @@ public class JamController {
         });
         simpleLogTimes.sort((o1, o2) -> o2.getDuration() - o1.getDuration());
         return ResponseEntity.ok(simpleLogTimes);
+    }
+
+    @GetMapping("/promotions")
+    @Operation(summary = "Get promotions")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Promotions found", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = int.class))
+                    )
+            })
+    })
+    public ResponseEntity<List<Integer>> getPromotions() {
+        List<Promotion> promotions = promotionRepository.findAll();
+        List<Integer> promotionIds = promotions.stream().map(Promotion::getId).collect(Collectors.toList());
+        return ResponseEntity.ok(promotionIds);
     }
 
     @PostMapping("/log")
