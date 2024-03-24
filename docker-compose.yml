@@ -12,6 +12,8 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    networks:
+      - db-api
   api:
     container_name: api-wolt
     depends_on:
@@ -20,6 +22,8 @@ services:
     ports:
       - "${API_PORT}:3000"
     restart: unless-stopped
+    networks:
+      - db-api
   application:
     container_name: application-wolt
     depends_on:
@@ -30,3 +34,5 @@ services:
     restart: unless-stopped
 volumes:
   postgres_data_jam:
+networks:
+  db-api:
