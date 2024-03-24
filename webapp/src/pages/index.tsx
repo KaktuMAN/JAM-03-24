@@ -80,7 +80,7 @@ export default function MainPage () {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row, index) => (
+          {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
             <TableRow
               key={row.mail}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
