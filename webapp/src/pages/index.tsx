@@ -1,4 +1,4 @@
-import React, {ReactElement} from "react";
+import React, {ReactElement, useEffect} from "react";
 import FullPage from "@components/layout/FullPage";
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
@@ -15,17 +15,14 @@ const formatDuration = (duration: number): string => {
 };
 
 export default function MainPage () {
-  const data: LogTime[] = [
-    {
-      "mail": "caca.pipi@epitech.eu",
-      "duration": 3600,
-    },
-    {
-      "mail": "raphael.goncaves-dos-santos@epitech.eu",
-      "duration": 3000,
-    }
-  ]
-
+  const [data, setData] = React.useState<LogTime[]>([]);
+  const getData = async () => {
+    const response = await fetch("https://jampi.pechart.fr/day?timestamp=1681164000");
+    setData(await response.json());
+  }
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <main className={"main"}>
       <h1>LeaderBoard</h1>

@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface LogTimeRepository extends JpaRepository<LogTime, String> {
     List<LogTime> findByDateBetween(Date startDate, Date endDate);
+    LogTime findByMailAndDate(String mail, Date date);
 }

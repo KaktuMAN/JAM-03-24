@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @Tag(name = "JAM", description = "Jam API")
-@CrossOrigin(origins = "https://intra.epitech.eu")
+@CrossOrigin(origins = "*")
 @RestController
 public class JamController {
     private final LogTimeRepository logTimeRepository;
@@ -74,6 +74,10 @@ public class JamController {
         }
         data.getLogTimes().forEach(logTime -> {
             Date date = Date.from(Instant.ofEpochSecond(logTime.getTimestamp()));
+            LogTime existingLogTime = logTimeRepository.findByMailAndDate(data.getMail(), date);
+            if (existingLogTime != null) {
+                return;
+            }
             LogTime logTimeObj = new LogTime(data.getMail(), date, logTime.getDuration());
             logTimeRepository.save(logTimeObj);
         });
