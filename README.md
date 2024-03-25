@@ -25,7 +25,7 @@ When the project is working you should have a leadrboard with the current data b
 
 ### 🔥 Contributors
 
-Please read the [contribution guidelines](https://github.com/KaktuMAN/JAM-03-24/blob/main/CONTRIBUTING.md) before opening a pull request or contributing to this repository
+Please read the [contribution guidelines](https://github.com/KaktuMAN/JAM-03-24/blob/main/CONTRIBUTING.md) before opening a pull request or contributing to this repository.
 
 <a href="https://github.com/KaktuMAN/JAM-03-24/graphs/contributors"> <img src="https://contrib.rocks/image?repo=KaktuMAN/JAM-03-24" /> </a>
 
